@@ -117,7 +117,6 @@
             },
             
             handleButtonBrows() {
-                // TODO: REMOVE ME 
                 this.files = this.$refs.myFiles.files;
                 this.createUploadWrapperFiles();
             },
