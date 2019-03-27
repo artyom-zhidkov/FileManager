@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from "vue-router";
-import ListPage from "./components/ListPage";
+import ListPage from "./components/list/ListPage";
 import HomePage from "./components/HomePage";
 import LoginPage from "./components/LoginPage";
 import AuthPage from "./components/AuthPage";
-import IdPage from "./components/IdPage";
+import IdPage from "./components/list/IdPage";
 
 Vue.use(VueRouter);
 

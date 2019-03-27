@@ -26,45 +26,19 @@
                     email: 'admin@ukr.net',
                     password: '123456',
                 },
-                dangerShow: false,
-                dangerMessage: "No access"
             }
         },
         computed: {
-            SERVER() {
-                return this.$store.getters.SERVER
+            dangerShow() {
+                return this.$store.getters.dangerShow
+            },
+            dangerMessage() {
+                return this.$store.getters.dangerMessage
             }
         },
         methods: {
             onSubmit() {
-                fetch(`http://${this.SERVER}/api/Account/Login`, {
-                    method: 'POST',
-                    headers: [
-                        ["Content-Type", "application/json"],
-                    ],
-                    body: JSON.stringify(this.form)
-                })
-                    .then(
-                        (response) => {
-                            return response;
-                        },
-                        () => {
-                            this.dangerMessage = "Server is not available";
-                            this.dangerShow = true;
-                        }
-                    )
-                    .then((res) => {
-                        if (res.status === 200) {
-                            this.$cookies.set("keyName", this.form.email);
-                            this.$store.dispatch("showIcon", true);
-                            this.$store.dispatch("setEmail", this.form.email);
-                            this.$router.push({ path: 'list' });
-                        }
-                        if (res.status === 401) {
-                            this.dangerShow = true;
-                            this.dangerMessage = "You don't have access rights";
-                        }
-                    });
+                this.$store.dispatch('authUser', this.form);
             },
             onReset() {
                 this.form.email = '';

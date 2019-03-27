@@ -64,7 +64,7 @@
 
 <script>
 
-    import FileWrapper from "./FileWrapper"
+    import FileWrapper from "../../model/FileWrapper"
     import UploadItem from "./UploadItem"
 
     export default {

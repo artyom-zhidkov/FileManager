@@ -1,9 +1,9 @@
 <template>
     <div>
         <h4>Create your personal account</h4>
-        <div class="listFiles__loginpage">
+        <div class="listFiles_loginPage">
             <b-alert variant="danger" v-model="dangerShow">{{dangerMessage}}</b-alert>
-            <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
+            <b-form @submit.prevent="authUser" @reset.prevent="onReset">
                 <b-form-group label="Email address:" label-for="email">
                     <b-form-input id="email" type="email" v-model="form.email" required placeholder="Enter email" />
                 </b-form-group>
@@ -30,45 +30,19 @@
                     password: '123',
                     confirmPassword: '123'
                 },
-                dangerShow: false,
-                dangerMessage: "No access"
             }
         },
         computed: {
-            SERVER() {
-                return this.$store.getters.SERVER
+            dangerShow() {
+                return this.$store.getters.dangerShow
+            },
+            dangerMessage() {
+                return this.$store.getters.dangerMessage
             }
         },
         methods: {
-            onSubmit() {
-                fetch(`http://${this.SERVER}/api/Account/Register`, {
-                    method: 'POST',
-                    headers: [
-                        ["Content-Type", "application/json"],
-                    ],
-                    body: JSON.stringify(this.form)
-                })
-                    .then(
-                        (response) => {
-                            return response;
-                        },
-                        () => {
-                            this.dangerMessage = "Server is not available";
-                            this.dangerShow = true;
-                        }
-                    )
-                    .then((res) => {
-                        if (res.status === 400) {
-                            this.dangerShow = true;
-                            this.dangerMessage = "Passwords do not match";
-                        } else {
-                            this.$cookies.set("keyName", this.form.email);
-                            this.$store.dispatch("showIcon", true);
-                            this.$store.dispatch("setEmail", this.form.email);
-                            this.$router.push({ path: 'list' });
-                        }
-                    });
-
+            authUser() {
+                this.$store.dispatch('authUser', this.form);
             },
             onReset() {
                 this.form.email = '';
@@ -80,7 +54,7 @@
 </script>
 
 <style scoped>
-    .listFiles__loginpage {
+    .listFiles_loginPage {
         width: 400px;
         margin: auto;
         border: 1px solid #f1f3f4;
