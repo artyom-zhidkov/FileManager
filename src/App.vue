@@ -1,42 +1,36 @@
 <template>
-    <div class="listFiles_app">
-        <header>
-            <nav-bar></nav-bar>
-        </header>
-        <main class="listFiles__main">
-            <router-view></router-view>
-        </main>
-        <!--<footer class="listFiles__footer">-->
-            <!--<div class="footer-copyright text-center py-3">© 2019 Copyright</div>-->
-        <!--</footer>-->
+    <div class="main-window d-flex align-self-stretch flex-column">
+        <div>
+            <header>
+                <nav-bar></nav-bar>
+            </header>
+            <main class="p-3">
+                <router-view></router-view>
+            </main>
+        </div>
+        <div class="mt-auto">
+            <footer class="bg-info text-white">
+                <div class="footer-copyright text-center py-3">© 2019 Copyright</div>
+            </footer>
+        </div>
     </div>
 </template>
 
 <script>
 
-import NavBar from "./components/NavBar"
+import navBar from "./components/nav-bar"
 
 export default {
     name: 'app',
     components: { 
-        NavBar 
+        navBar 
     }
 }
 </script>
 
 <style lang="scss">
-
-$color-footer: #17a2b8;
-
-.listFiles__footer {
-    background: $color-footer;
-    color: white;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-}
-
-.listFiles__main {
-    padding: 15px;
-}
+    html, body, .main-window {
+        height: 100%;
+    }
+    // }
 </style>

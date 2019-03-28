@@ -55,7 +55,7 @@
         <div class="heigth">
             <b-button @click="handleUpload" :hidden="!isShow.buttonUpload" variant="info">Upload</b-button>
             <b-button @click="handleCancel" :hidden="!isShow.buttonCancel" variant="info">Cancel</b-button>
-            <b-link @click="reset" class="link" :hidden="!selected">Clear Uploaded</b-link>
+            <b-link @click="reset" class="link" :hidden="!isShow.buttonClear">Clear Uploaded</b-link>
         </div>            
     </div>
     
@@ -64,12 +64,12 @@
 
 <script>
 
-    import FileWrapper from "../../model/FileWrapper"
-    import UploadItem from "./UploadItem"
+    import FileWrapper from "../../models/file-wrapper"
+    import uploadItem from "./upload-item"
 
     export default {
-        name: "Upload",
-        components: {UploadItem},
+        name: "upload",
+        components: {uploadItem},
         props: {
                 chunkSize: Number,
                 mode: String,
@@ -81,6 +81,7 @@
             return {
                 files: [],
                 wrapperFiles: [],
+                amountWrapperFiles: 0,
                 errorFiles: new Set(),
                 errorFileType: new Set(),
                 dropDestination: false,
@@ -93,6 +94,7 @@
                     },
                     buttonUpload: false,
                     buttonCancel: false,
+                    buttonClear: false,
                     alertErrorFiles: false
                 },
             }
@@ -112,6 +114,7 @@
                 this.errorFileType.clear();
                 this.isShow.buttonUpload = false;
                 this.isShow.buttonCancel = false;
+                this.isShow.buttonClear = false;
                 this.isShow.alertErrorFiles = false;
                 for (let state in this.isShow.restrict) state = false;
             },
@@ -172,6 +175,7 @@
                         if (this.wrapperFiles.length < 3) {
                             this.wrapperFiles.push(new FileWrapper(this.files[i], this.chunkSize));
                             this.isShow.buttonUpload = true;
+                            this.isShow.buttonClear = true;
                         } else {
                             this.isShow.restrict.count = false;
                             this.errorFiles.add(this.files[i].name);
@@ -193,6 +197,7 @@
 
                 this.isShow.buttonUpload = false;
                 this.isShow.buttonCancel = true;
+                this.isShow.buttonClear = false;
 
                 async function upload(fileWrapper) {
                     if (!fileWrapper.status.finished) {
@@ -206,18 +211,44 @@
                             chunksData: chunk
                         }
 
-                        await self.$store.dispatch('uploadChunks', body);
+                        await self.$store.dispatch('uploadStore/uploadChunks', body);
                         await upload(fileWrapper);
                     }
                 }
 
-                let i = 0;
+                  async function upload(fileWrapper) {
+                    if (!fileWrapper.status.finished) {
+                        const chunk = await fileWrapper.readCurrentChunk();
+                        const body = {
+                            fileId: fileWrapper.fileId,
+                            fileName: fileWrapper.name,
+                            n: fileWrapper.currentChunk,
+                            totalCounts: fileWrapper.sumChunk,
+                            chunksData: chunk
+                        }
+                        await self.$store.dispatch('uploadStore/uploadChunks', body);
+                        await upload(fileWrapper);
+                    }
+                }
+                 let i = 0;
                 (async function start(wrapperFiles) {
                     if (i < wrapperFiles.length) {
                         await upload(wrapperFiles[i++]);
                         start(wrapperFiles);
+                        
+                    } else {
+                        self.isShow.buttonCancel = false;
+                        self.isShow.buttonClear = true;
+                    self.$store.dispatch("listStore/getList")
+                        // debugger;
+                        return Promise.resolve();
                     }
                 })(this.wrapperFiles);
+
+
+
+
+                
             }
         }
     }
@@ -325,4 +356,32 @@
 
 </style>
 
-            
+                  // async function uploadWeaper(file) {
+                //     // return new Promise(resolve => {
+                //         // (async () => {
+                //             await upload(file);
+                //         // })();
+                //         // resolve();
+                //     // });
+                // }
+
+                // function start(files) {
+                //     return new Promise((resolve) => {
+                //         // let i = 0;
+                //         // while (i < files.length) {
+                //         //     uploadWeaper(files[i]);
+                //         //     i++;
+                //         // }
+                //         await uploadWeaper(files[0]);
+                //         await uploadWeaper(files[1]);
+                //         resolve();
+                //     })
+                // }
+
+                // start(this.wrapperFiles).then(v => {
+                //     self.isShow.buttonCancel = false;
+                //     self.isShow.buttonClear = true;
+                //     self.$store.dispatch("listStore/getList");
+                // });
+
+          

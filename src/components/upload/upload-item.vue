@@ -23,7 +23,7 @@
 
 <script>
     export default {
-        name: "UploadItem",
+        name: "upload-item",
         props: {
             fileWrapper: Object
         },

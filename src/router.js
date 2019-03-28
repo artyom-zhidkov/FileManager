@@ -1,20 +1,21 @@
 import Vue from 'vue';
 import VueRouter from "vue-router";
-import ListPage from "./components/list/ListPage";
-import HomePage from "./components/HomePage";
-import LoginPage from "./components/LoginPage";
-import AuthPage from "./components/AuthPage";
-import IdPage from "./components/list/IdPage";
+
+import listPage from "./components/list/list-page";
+import homePage from "./components/home-page";
+import loginPage from "./components/login-page";
+import authPage from "./components/auth-page";
+import fileDetailsPage from "./components/list/file-details-page";
 
 Vue.use(VueRouter);
 
 const routes = [
     { path: '/', redirect: "/list" },
-    { path: '/home', component: HomePage },
-    { path: '/login', component: LoginPage },
-    { path: '/auth', component: AuthPage },
-    { path: '/list', component: ListPage },
-    { path: '/list/:id', component: IdPage }
+    { path: '/home', component: homePage },
+    { path: '/login', component: loginPage },
+    { path: '/auth', component: authPage },
+    { path: '/list', component: listPage },
+    { path: '/list/:id', component: fileDetailsPage }
 ];
 
 const router = new VueRouter({
