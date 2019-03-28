@@ -230,7 +230,7 @@
                         await upload(fileWrapper);
                     }
                 }
-                 let i = 0;
+                 let i = 0
                 (async function start(wrapperFiles) {
                     if (i < wrapperFiles.length) {
                         await upload(wrapperFiles[i++]);
