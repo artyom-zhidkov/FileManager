@@ -8,7 +8,7 @@ export default class FileDetailsStore {
             setFiles(state, value) {
                 state.file = value;
             }
-        },
+        }
         this.actions = {
             getFile(context, id) {
                 const promise = fetch(`${URL}/api/Component/${id}`);
@@ -26,6 +26,14 @@ export default class FileDetailsStore {
 
                 return promise;
             },
+        }
+        this.getters = {
+            getFileDetails(state) {
+                // let temp = state.file;
+                // delete temp[0].chunkData;
+                // return temp;
+                return state.file;
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ import ListStore from './list-store';
 import FileDetailsStore from './file-details-store';
 import navbar from './navBar-store';
 
-const URL = "http://172.22.61.69:9999";
+const URL = "http://172.22.61.35:9999";
 
 
 const loginUserStore = new LoginUserStore(URL);

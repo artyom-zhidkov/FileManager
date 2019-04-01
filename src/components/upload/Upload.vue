@@ -1,61 +1,54 @@
 <template>
-    <div class="storageFiles__upload">
-
+    <div class="pb-2">
         <div :class="dropDestination ? 'drop-area activ' : 'drop-area'"
             @dragenter="handleDragenterOver"
             @dragover.prevent="handleDragenterOver"
             @dragleave="handleDragleave"
             @drop.prevent="handleDrop">
-            <div class="dashed">
+            <div class="dashed text-center">
                 <form class="my-form mb-0">
                     <i class="fas fa-cloud-upload-alt fa-3x"></i>
-                    <p >Drag&Drop files here</p>
-                    <p>or</p>
-
-                    <label class="upload_button" for="fileElem">Browse files</label>
-                    <input type="file" id="fileElem" ref="myFiles" multiple
+                    <p class="font-weight-bold pt-2">Drag&Drop files here or</p>
+                    <label class="button-browse-files" for="fileElem">Browse files</label>
+                    <input type="file" id="fileElem" class="d-none" ref="myFiles" multiple
                            @change="handleButtonBrows">
-                    <br>
-
-                    <div class="alert-error-restrictions">
-                        <b-alert class="b-alert" :show="isShow.alertErrorFiles" variant="danger">
-                            <span>Error files:</span>
+                    <div class="d-flex justify-content-center text-left p-3">
+                        <div class="p-2 align-baseline" v-if="isShow.alertErrorFiles">
+                            <span class="font-weight-bold">Error files:</span>
                             <div v-for="(fileName, key) in errorFiles" :key="key">
-                                <i class="fas fa-times"></i>
-                                <span>{{fileName}}</span>
+                                <i class="fas fa-times text-danger"></i>
+                                <span class="pl-2">{{fileName}}</span>
                             </div>
-                        </b-alert>
-                        <b-alert class="b-alert" :show="isShow.alertErrorFiles" variant="light">
-                            <span>Restrictions:</span>
+                        </div>
+                        <div class="p-2 align-baseline" v-if="isShow.alertErrorFiles">
+                            <span class="font-weight-bold">Restrictions:</span>
                             <div v-show="isShow.restrict.count">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <span>count files limit: {{validFileCount}}</span>
+                                <i class="fas fa-exclamation-circle text-info"></i>
+                                <span class="pl-2">count files limit: {{validFileCount}}</span>
                             </div>
                             <div v-show="isShow.restrict.type">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <span>forbidden file types:</span>
+                                <i class="fas fa-exclamation-circle text-info"></i>
+                                <span class="pl-2">forbidden file types:</span>
                                 <span v-for="(type, key) in errorFileType" :key="key">
-                                    <span>{{type}}</span>
+                                    <span class="pl-2">{{type}}</span>
                                 </span>
                             </div>
                             <div v-show="isShow.restrict.size">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <span>size files limit: {{validFileSize}}</span>
+                                <i class="fas fa-exclamation-circle text-info"></i>
+                                <span class="pl-2">size files limit: {{validFileSize}}</span>
                             </div>
-                        </b-alert>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="result-upp">
-            <div v-for="(fileWrapper, key) in wrapperFiles" :key="key">
-                <upload-item @deleteFile="deleteFile" :fileWrapper="fileWrapper"></upload-item>
-            </div>
+        <div v-for="(fileWrapper, key) in wrapperFiles" :key="key">
+            <upload-item @deleteFile="deleteFile" :fileWrapper="fileWrapper"></upload-item>
         </div>
-        <div class="heigth">
-            <b-button @click="handleUpload" :hidden="!isShow.buttonUpload" variant="info">Upload</b-button>
-            <b-button @click="handleCancel" :hidden="!isShow.buttonCancel" variant="info">Cancel</b-button>
-            <b-link @click="reset" class="link" :hidden="!isShow.buttonClear">Clear Uploaded</b-link>
+        <div class="d-flex justify-content-center">
+            <b-button class="ml-2" @click="handleUpload" :hidden="!isShow.buttonUpload" variant="info">Upload</b-button>
+            <b-button class="ml-2" @click="handleCancel" :hidden="!isShow.buttonCancel" variant="info">Cancel</b-button>
+            <b-button class="ml-2" @click="reset" :hidden="!isShow.buttonClear" variant="outline-danger">Clear Uploaded</b-button>
         </div>            
     </div>
     
@@ -160,15 +153,19 @@
                         this.errorFiles.add(this.files[i].name);
                         this.isShow.alertErrorFiles = true;
                         this.isShow.restrict.type = true;
+                        this.isShow.buttonClear = true;
                     }
                     if (this.files[i].size > this.validFileSize) {
                         this.errorFiles.add(this.files[i].name);
                         this.isShow.alertErrorFiles = true;
                         this.isShow.restrict.size = true;
+                        this.isShow.buttonClear = true;
                     }
-                    if (((this.files.length + this.wrapperFiles.length) > this.validFileCount) && (this.wrapperFiles.length === this.validFileCount)) {
+                    // && (this.wrapperFiles.length === this.validFileCount))
+                    if (((this.files.length + this.wrapperFiles.length) > this.validFileCount)) {
                         this.isShow.alertErrorFiles = true;
                         this.isShow.restrict.count = true;
+                        this.isShow.buttonClear = true;
                         this.errorFiles.add(this.files[i].name);
                     }
                     if (!this.errorFiles.has(this.files[i].name)) {
@@ -194,7 +191,6 @@
 
             handleUpload() {
                 const self = this;
-
                 this.isShow.buttonUpload = false;
                 this.isShow.buttonCancel = true;
                 this.isShow.buttonClear = false;
@@ -202,7 +198,6 @@
                 async function upload(fileWrapper) {
                     if (!fileWrapper.status.finished) {
                         const chunk = await fileWrapper.readCurrentChunk();
-
                         const body = {
                             fileId: fileWrapper.fileId,
                             fileName: fileWrapper.name,
@@ -210,178 +205,76 @@
                             totalCounts: fileWrapper.sumChunk,
                             chunksData: chunk
                         }
-
-                        await self.$store.dispatch('uploadStore/uploadChunks', body);
-                        await upload(fileWrapper);
-                    }
-                }
-
-                  async function upload(fileWrapper) {
-                    if (!fileWrapper.status.finished) {
-                        const chunk = await fileWrapper.readCurrentChunk();
-                        const body = {
-                            fileId: fileWrapper.fileId,
-                            fileName: fileWrapper.name,
-                            n: fileWrapper.currentChunk,
-                            totalCounts: fileWrapper.sumChunk,
-                            chunksData: chunk
+                        if (!self.isShow.buttonCancel) {
+                            self.reset();
+                            this.isShow.buttonClear = false;
+                        } else {
+                         await self.$store.dispatch('uploadStore/uploadChunks', body);
+                         await upload(fileWrapper);
                         }
-                        await self.$store.dispatch('uploadStore/uploadChunks', body);
-                        await upload(fileWrapper);
                     }
                 }
-                 let i = 0
+
+                let i = 0;
                 (async function start(wrapperFiles) {
                     if (i < wrapperFiles.length) {
                         await upload(wrapperFiles[i++]);
                         start(wrapperFiles);
-                        
                     } else {
                         self.isShow.buttonCancel = false;
                         self.isShow.buttonClear = true;
-                    self.$store.dispatch("listStore/getList")
-                        // debugger;
+                        self.$store.dispatch("listStore/getList");
                         return Promise.resolve();
                     }
                 })(this.wrapperFiles);
-
-
-
-
-                
             }
         }
     }
  </script>
 
 
+
 <style lang="scss" scoped>
-    .storageFiles__upload {
-        .heigth{
-            height: 30px;
-            position: relative;
-        }
 
-        padding-bottom: 25px;
-        text-align: center;
+    $background-color: #f1f3f4;
+    $border-color: rgb(236, 236, 236);
+    $main-color: #17a2b8;
 
-        p {
-            margin: 10px;
-        }
-
-        span {
-            padding-left: 10px;
-        }
-
-        form {
-            .b-alert {
-                background: inherit;
-                text-align: left;
-                font-weight: 200;
-                margin-bottom: 0;
-                border: none;
-            }
-        }
-    }
     .drop-area {
-                background-color: #f1f3f4;
-                margin-bottom: 20px;
-                border-radius: 3px;
-                padding: 10px;
-                color: grey;
-                
-                   
-            }
-    .link {
-        position: absolute;
-        right: 15px;
-        bottom: 10px;
+        background-color: $background-color;
+        margin-bottom: 20px;
+        border-radius: 3px;
+        padding: 10px;
         color: grey;
+
+        .dashed {
+            border: 2px dashed #ccc;
+            border-radius: 3px;
+            padding: 20px;
+            pointer-events: none;
+        }
+
+        .button-browse-files {
+            display: inline-block;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid $main-color;
+            color: $main-color;
+            margin-bottom: 0;
+            pointer-events: auto;
+        }
+
+        .button-browse-files:hover {
+            background: #17a2b8;
+            color: white;
+        }
     }
-    .back-white {
-        background: white;
-    }
-    .success-alert {
-        font-size: small;
-        padding: 5px 5px 0 5px;
-        margin-bottom: 10px;
-        text-align: left;
-    }
-    .alert-error-restrictions {
-        display: flex;
-        font-size: small;
-        .b-alert {
-            padding: 0 10px;
-        }     
-    }
+
     .activ {
         .dashed {
             border: 2px dashed #6d8ccc;
             background-color: #aee6f4;
         }
     }
-
-    .dashed {
-        border: 2px dashed #ccc;
-        border-radius: 3px;
-        padding: 20px;
-        pointer-events: none;
-    }
-
-    .my-form {
-        margin-bottom: 10px;
-        text-align: center;
-        font-weight: bold;
-    }
-
-    .upload_button {
-        display: inline-block;
-        padding: 10px;
-        cursor: pointer;
-        border-radius: 5px;
-        border: 1px solid #17a2b8;
-        color: #17a2b8;
-        margin-bottom: 0;
-        pointer-events: auto;
-    }
-
-    .upload_button:hover {
-        background: #17a2b8;
-        color: white;
-    }
-
-    #fileElem {
-        display: none;
-    }
-
-</style>
-
-                  // async function uploadWeaper(file) {
-                //     // return new Promise(resolve => {
-                //         // (async () => {
-                //             await upload(file);
-                //         // })();
-                //         // resolve();
-                //     // });
-                // }
-
-                // function start(files) {
-                //     return new Promise((resolve) => {
-                //         // let i = 0;
-                //         // while (i < files.length) {
-                //         //     uploadWeaper(files[i]);
-                //         //     i++;
-                //         // }
-                //         await uploadWeaper(files[0]);
-                //         await uploadWeaper(files[1]);
-                //         resolve();
-                //     })
-                // }
-
-                // start(this.wrapperFiles).then(v => {
-                //     self.isShow.buttonCancel = false;
-                //     self.isShow.buttonClear = true;
-                //     self.$store.dispatch("listStore/getList");
-                // });
-
-          
+</style>        

@@ -7,12 +7,11 @@
                 <i :hidden="!fileWrapper.status.finished" class="fas fa-check ml-3 icon-color"></i>
             </div>
             <div>
-                <b-link @click="deleteFile()" :disabled="fileWrapper.inProgress" >
-                    <span :class="fileWrapper.inProgress ? 'icon-color_grey' : 'icon-color_grey hover'">
+                <b-link @click="deleteFile()" :disabled="(fileWrapper.status.inProgress || fileWrapper.status.finished)" >
+                    <span :class="(fileWrapper.status.inProgress || fileWrapper.status.finished) ? 'icon-color_grey' : 'icon-color_grey hover'">
                         <i class="fas fa-times"></i>
                     </span>
                 </b-link>
-                
             </div>
         </div>
         <div class="progress-bar">
@@ -43,7 +42,9 @@
             },
 
             deleteFile() {
-                this.$emit("deleteFile", this.fileWrapper.fileId);
+                if (!this.fileWrapper.status.inProgress || !this.fileWrapper.status.finished) {
+                    this.$emit("deleteFile", this.fileWrapper.fileId);
+                }
             }
         },
     }

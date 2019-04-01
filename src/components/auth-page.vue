@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h4>Create your personal account</h4>
-        <div class="listFiles_loginPage">
+        <h4 class="text-center pb-2">Create your personal account</h4>
+        <div class="auth-form p-2">
             <b-alert variant="danger" v-model="dangerShow">{{dangerMessage}}</b-alert>
             <b-form @submit.prevent="authUser" @reset.prevent="onReset">
                 <b-form-group label="Email address:" label-for="email">
@@ -30,44 +30,44 @@
                     password: '123',
                     confirmPassword: '123'
                 },
-            }
-        },
-        computed: {
-            dangerShow() {
-                return this.$store.getters.dangerShow
-            },
-            dangerMessage() {
-                return this.$store.getters.dangerMessage
+                dangerMessage: "No access",
+                dangerShow: false
             }
         },
         methods: {
             authUser() {
-                this.$store.dispatch('authUser', this.form)
+                const self = this;
+                this.$store.dispatch('authUserStore/authUser', this.form)
                 .then(() => {
-                    this.$cookies.set("keyName", this.form.email);
-                    this.$store.dispatch("navbar/showIcon", true);
-                    this.$store.dispatch("navbar/setEmail", this.form.email);
-                    this.$router.push({ path: 'list' });
+                    self.$cookies.set("keyName", this.form.email);
+                    self.$store.dispatch("navbar/showIcon", true);
+                    self.$store.dispatch("navbar/setEmail", this.form.email);
+                    self.$router.push({ path: 'list' });
                 })
+                .catch(
+                    () => {
+                        this.dangerMessage = "Server is not available";
+                        this.dangerShow = true;
+                    }
+                //     if (res.status === 400) {
+                //         // this.commit('dangerShow', true);
+                //         // this.commit('dangerMessage', "Passwords do not match");
+                )
             },
             onReset() {
                 this.form.email = '';
                 this.form.password = '';
                 this.dangerShow = false;
             }
-        }
+        },
+        
     }
 </script>
 
 <style scoped>
-    .listFiles_loginPage {
-        width: 400px;
+    .auth-form {
+        max-width: 400px;
         margin: auto;
         border: 1px solid #f1f3f4;
-        padding: 10px;
-    }
-    h4 {
-        text-align: center;
-        padding-bottom: 10px;
     }
 </style>

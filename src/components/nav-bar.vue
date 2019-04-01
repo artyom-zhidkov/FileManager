@@ -32,17 +32,17 @@
             name: "nav-bar",
             computed: {
                 isLogin() {
-                    return this.$store.getters.isLogin
+                    return this.$store.state.navbar.isLogin
                 },
                 userEmail() {
-                    return this.$store.getters.userEmail
+                    return this.$store.state.navbar.userEmail
                 },
             },
             methods: {
                 logout() {
                     if (this.$cookies.isKey("keyName")) {
                         this.$cookies.remove("keyName");
-                        this.$store.dispatch("showIcon", false);
+                        this.$store.dispatch("navbar/showIcon", false);
                         this.$router.push({ path: 'home' });
                     }
                 },
@@ -58,18 +58,12 @@
             },
             created() {
                 if (this.$cookies.isKey("keyName")) {
-                    this.$store.dispatch("setEmail", this.$cookies.get("keyName"));
-                    this.$store.dispatch("showIcon", true);
+                    this.$store.dispatch("navbar/setEmail", this.$cookies.get("keyName"));
+                    this.$store.dispatch("navbar/showIcon", true);
                 }
             }
         }
     </script>
 
     <style scoped lang="scss">
-
-        .listFiles__navbar_button {
-            width: 100px;
-            margin: inherit;
-        }
-
     </style>

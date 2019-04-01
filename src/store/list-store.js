@@ -52,11 +52,11 @@ export default class ListPageStore {
                 })
             }
         }
-        this.getters = {
-            getFiles(state) {
-                return state.files
-            }
-        }
+        // this.getters = {
+        //     getFiles(state) {
+        //         return state.files
+        //     }
+        // }
     }
 }
 

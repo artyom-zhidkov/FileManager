@@ -32,5 +32,4 @@ export default {
     html, body, .main-window {
         height: 100%;
     }
-    // }
 </style>
