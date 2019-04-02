@@ -3,10 +3,11 @@ import Vuex from 'vuex'
 
 import AuthUserStore from "./auth-store";
 import LoginUserStore from "./login-store";
-import UploadStore from './uploadStore';
+import UploadStore from './upload-store';
 import ListStore from './list-store';
 import FileDetailsStore from './file-details-store';
-import navbar from './navBar-store';
+import navBarStore from './navBar-store';
+import errorMessageStore from './error-message-store';
 
 const URL = "http://172.22.61.35:9999";
 
@@ -25,7 +26,8 @@ export default () => {
         uploadStore,
         listStore,
         fileDetailsStore,
-        navbar
+        navBarStore,
+        errorMessageStore
     };
 
     return new Vuex.Store({

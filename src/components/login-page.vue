@@ -38,8 +38,10 @@
                         return response;
                     },
                     () => {
-                        this.dangerMessage = "Server is not available";
-                        this.dangerShow = true;
+                        this.$store.dispatch('errorMessageStore/pushMessage', {
+                            header: "Server is not available",
+                            description: "Server is not available"
+                        });
                     }
                 )
                 .then((res) => {
@@ -50,8 +52,11 @@
                         this.$router.push({ path: 'list' });
                     }
                     if (res.status === 401) {
-                        this.dangerMessage = "You don't have access rights";
-                        this.dangerShow = true;
+                        this.$store.dispatch('errorMessageStore/pushMessage', {
+                            header: "You don't have access rights",
+                            description: "You don't have access rights"
+                        });
+
                     }
                 });
             },

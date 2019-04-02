@@ -1,35 +1,45 @@
 <template>
-    <div class="main-window d-flex align-self-stretch flex-column">
-        <div>
-            <header>
-                <nav-bar></nav-bar>
-            </header>
-            <main class="p-3">
-                <router-view></router-view>
-            </main>
+    <div class="main">
+        <div class="main d-flex align-self-stretch flex-column">
+            <div>
+                <header>
+                    <nav-bar></nav-bar>
+                </header>
+                <main class="p-3">
+                    <router-view></router-view>
+                </main>
+            </div>
+            <div class="mt-auto">
+                <footer class="bg-info text-white">
+                    <div class="footer-copyright text-center py-3">© 2019 Copyright</div>
+                </footer>
+            </div>
         </div>
-        <div class="mt-auto">
-            <footer class="bg-info text-white">
-                <div class="footer-copyright text-center py-3">© 2019 Copyright</div>
-            </footer>
-        </div>
+        <error-message class="er-message position-absolute"></error-message>
     </div>
 </template>
 
 <script>
 
 import navBar from "./components/nav-bar"
+import errorMessage from "./components/error-message"
 
 export default {
     name: 'app',
     components: { 
-        navBar 
+        navBar,
+        errorMessage
     }
 }
 </script>
 
-<style lang="scss">
-    html, body, .main-window {
+<style scope lang="scss">
+    html, body, .mainn {
         height: 100%;
+    }
+
+    .er-message {
+        right: 5%;
+        top: 10%;
     }
 </style>

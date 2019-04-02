@@ -65,9 +65,17 @@
 
             deleteFile() {
                 this.$store.dispatch('listStore/deleteFiles', this.selected.join(","))
-                .then(() => {
-                    this.$store.dispatch("listStore/getList");
-                })
+                .then(
+                    () => {
+                        this.$store.dispatch("listStore/getList");
+                    },
+                    () => {
+                        this.$store.dispatch('errorMessageStore/pushMessage', {
+                            header: "Server is not available",
+                            description: "Server is not available"
+                        });
+                    }
+                )
             }
         },
         computed: {

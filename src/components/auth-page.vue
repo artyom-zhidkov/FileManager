@@ -38,21 +38,35 @@
             authUser() {
                 const self = this;
                 this.$store.dispatch('authUserStore/authUser', this.form)
-                .then(() => {
-                    self.$cookies.set("keyName", this.form.email);
-                    self.$store.dispatch("navbar/showIcon", true);
-                    self.$store.dispatch("navbar/setEmail", this.form.email);
-                    self.$router.push({ path: 'list' });
-                })
-                .catch(
+                .then(
                     () => {
-                        this.dangerMessage = "Server is not available";
-                        this.dangerShow = true;
+                        self.$cookies.set("keyName", this.form.email);
+                        self.$store.dispatch("navbar/showIcon", true);
+                        self.$store.dispatch("navbar/setEmail", this.form.email);
+                        self.$router.push({ path: 'list' });
+                    },
+                    () => {
+                        self.$store.dispatch('errorMessageStore/pushMessage', {
+                            header: "Server is not available",
+                            description: "Server is not available"
+                        });
                     }
-                //     if (res.status === 400) {
-                //         // this.commit('dangerShow', true);
-                //         // this.commit('dangerMessage', "Passwords do not match");
                 )
+                .then((res) => {
+                    if (res.status === 200) {
+                        self.$cookies.set("keyName", this.form.email);
+                        self.$store.dispatch("navbar/showIcon", true);
+                        self.$store.dispatch("navbar/setEmail", this.form.email);
+                        self.$router.push({ path: 'list' });
+                    }
+                    if (res.status === 400) {
+                        self.$store.dispatch('errorMessageStore/pushMessage', {
+                            header: "Passwords do not match",
+                            description: "Passwords do not match"
+                        });
+
+                    }
+                });
             },
             onReset() {
                 this.form.email = '';

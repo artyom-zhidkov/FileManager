@@ -1,16 +1,15 @@
 <template>
-    <div class="listFiles__navbar">
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-brand @click="HomePage" href="#">FileStorage</b-navbar-brand>
             <b-navbar-toggle target="nav_collapse" />
             <b-collapse is-nav id="nav_collapse">
                 <!-- Right-->
                 <b-navbar-nav class="ml-auto">
-                    <b-navbar-nav class="listFiles__navbar_button">
+                    <b-navbar-nav>
                         <b-nav-item v-show="!isLogin"
                                     @click="loginPage" href="#">Log in</b-nav-item>
                     </b-navbar-nav>
-                    <b-button v-show="!isLogin" size="sm" class="listFiles__navbar_button"
+                    <b-button v-show="!isLogin" size="sm"
                               variant="outline-light" type="submit" @click="AuthPage">Sign up</b-button>
                     <b-navbar-brand href="#">
                         <i v-show="isLogin" class="fas fa-user-check"></i>
@@ -20,11 +19,10 @@
                                 <em>{{userEmail}}</em>
                             </template>
                             <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-                        </b-nav-item-dropdown>
-                    </b-navbar-nav>
-                </b-collapse>
-            </b-navbar>
-        </div>
+                    </b-nav-item-dropdown>
+                </b-navbar-nav>
+            </b-collapse>
+        </b-navbar>
     </template>
 
     <script>
@@ -32,17 +30,17 @@
             name: "nav-bar",
             computed: {
                 isLogin() {
-                    return this.$store.state.navbar.isLogin
+                    return this.$store.state.navBarStore.isLogin
                 },
                 userEmail() {
-                    return this.$store.state.navbar.userEmail
+                    return this.$store.state.navBarStore.userEmail
                 },
             },
             methods: {
                 logout() {
                     if (this.$cookies.isKey("keyName")) {
                         this.$cookies.remove("keyName");
-                        this.$store.dispatch("navbar/showIcon", false);
+                        this.$store.dispatch("navBarStore/showIcon", false);
                         this.$router.push({ path: 'home' });
                     }
                 },
@@ -58,8 +56,8 @@
             },
             created() {
                 if (this.$cookies.isKey("keyName")) {
-                    this.$store.dispatch("navbar/setEmail", this.$cookies.get("keyName"));
-                    this.$store.dispatch("navbar/showIcon", true);
+                    this.$store.dispatch("navBarStore/setEmail", this.$cookies.get("keyName"));
+                    this.$store.dispatch("navBarStore/showIcon", true);
                 }
             }
         }
