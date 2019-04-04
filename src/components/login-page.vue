@@ -22,7 +22,7 @@
         data() {
             return {
                 form: {
-                    email: '@ukr.net',
+                    email: 'Admin@ukr.net',
                     password: '123456',
                 }
             }

@@ -161,6 +161,7 @@
                     if (this.files[i].size > this.validFileSize) {
                         this.errorFiles.add(this.files[i].name);
                         this.isShow.restrict.size = true;
+                        continue;
                     }
                     if (!this.errorFiles.has(this.files[i].name)) {
                         if (this.wrapperFiles.length < 3) {
@@ -169,6 +170,12 @@
                         } else {
                             this.isShow.restrict.count = true;;
                             this.errorFiles.add(this.files[i].name);
+                        }
+                    } else {
+                        if ((this.wrapperFiles.length < 3) && (this.files[i].size < this.validFileSize) && (this.validFileTypeSet.has(extension))) {
+                            this.wrapperFiles.push(new FileWrapper(this.files[i], this.chunkSize));
+                            this.errorFiles.delete(this.files[i].name);
+                            this.isShow.restrict.count = false;
                         }
                     }
                 }
@@ -200,10 +207,9 @@
                         }
                         if (!self.isShow.buttonCancel) {
                             self.reset();
-                            this.isShow.buttonClear = false;
                         } else {
-                         await self.$store.dispatch('uploadStore/uploadChunks', body);
-                         await upload(fileWrapper);
+                            await self.$store.dispatch('uploadStore/uploadChunks', body);
+                            await upload(fileWrapper);
                         }
                     }
                 }
@@ -217,7 +223,7 @@
                         self.isShow.buttonCancel = false;
                         self.isShow.buttonClear = true;
                         self.$store.dispatch("listStore/getList");
-                        return Promise.resolve();
+                        return;
                     }
                 })(this.wrapperFiles);
             }

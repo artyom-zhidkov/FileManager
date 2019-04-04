@@ -32,13 +32,19 @@
                     jpg: "fas fa-image",
                     png: "fas fa-file-image",
                     txt: "fas fa-file-alt",
-                    pdf: "fas fa-file-pdf"
+                    pdf: "fas fa-file-pdf",
+                    "7z": "fas fa-file-archive"
                 }
             }
         },
         methods: {
             getIcon(fileName) {
-                return this.icon[fileName.split(".").pop()]
+                const extention = fileName.split(".").pop();
+                if (this.icon.hasOwnProperty(extention)) {
+                    return this.icon[extention]
+                } else {
+                    return "far fa-file";
+                }
             },
 
             deleteFile() {

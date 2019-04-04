@@ -13,18 +13,24 @@ export default class FileDetailsStore {
             getFile(context, id) {
                 const promise = fetch(`${URL}/api/UI/${id}`)
                 
-                promise.then((response) => {
-                        context.commit("setFile", response.json());
+                promise
+                .then((response) => {
+                    return response.json();
+                }
+                )
+                .then((response) => {
+                        context.commit("setFile", response);
                     }
                 )
                 .catch((err) => {
                     context.dispatch('errorMessageStore/pushMessage', {
                         header: "Server is not available",
-                        description: `${err}`
+                        description: `${err}`,
+                        variant: "danger"
                     }, {root: true});
                 });
 
-                return promise;
+                // return promise;
             }
         }
     }

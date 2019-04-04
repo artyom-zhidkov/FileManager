@@ -1,9 +1,9 @@
 <template>
     <div>
-        <upload :chunkSize="102400"
+        <upload :chunkSize="10240000"
                 :validFileType="['txt', 'jpg', 'png', 'pdf', '7z', 'mp4']" 
                 :validFileCount="3" 
-                :validFileSize="10000"
+                :validFileSize="100000000"
         ></upload>
 
         <table class="table table-striped table-hover">

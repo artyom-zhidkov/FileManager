@@ -1,7 +1,6 @@
 <template>
     <div>
-        <p>{{file}}</p>
-        <!-- <b-table striped hover :items="file"></b-table> -->
+        <b-table striped hover :items="file"></b-table>
         <router-link to="/list">
             <b-button variant="info">back</b-button>
         </router-link>
@@ -13,7 +12,7 @@
         name: "file-details-page",
         computed: {
             file() {
-                return this.$store.fileDetailsStore.file
+                return [this.$store.state.fileDetailsStore.file]
             }
         },
         created() {

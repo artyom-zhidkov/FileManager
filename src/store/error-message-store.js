@@ -5,8 +5,7 @@ export default {
     }, 
     mutations: {
         pushMessage(state, newValue) {
-            let obj = Object.assign(newValue, {id: state.messages.length})
-            state.messages.push(obj);
+            state.messages.push(newValue);
         },
         delleteMessage(state, id) {
             delete state.messages.splice(id, 1);
@@ -18,7 +17,7 @@ export default {
             var self = context;
             setTimeout(function(){
                 self.commit('delleteMessage', self.state.messages.length - 1)
-            }, 6000);
+            }, 8000);
 
         },
         delleteMessage(context, id) {

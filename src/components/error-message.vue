@@ -1,11 +1,10 @@
 <template>
     <div class="error-wrapper" v-if="isShow">
         <div v-bind:key="index" v-for="(message, index) in messages">
-            <b-alert :show="isShow" variant="danger" class="pr-4 position-relative">
+            <b-alert :show="isShow" :variant="message.variant" class="pr-4 position-relative">
                 <p class="p-2 m-0">{{message.header}}</p>
-                <p class="p-2 m-0">{{message.index}}</p>
                 <p class="p-2 m-0">{{message.description}}</p>
-                <b-link @click="buttonClose(message.index)" class="position-absolute cross" >
+                <b-link @click="buttonClose(index)" class="position-absolute cross" >
                     <span>
                         <i class="fas fa-times"></i>
                     </span>

@@ -13,6 +13,7 @@
                     <b-form-input id="confirmPassword" type="password" v-model="form.confirmPassword" required placeholder="Enter password" />
                 </b-form-group>
                 <b-button class="mr-2" type="submit" variant="primary">Create an account</b-button>
+                <b-button type="reset" variant="outline-primary">Reset</b-button>
             </b-form>
         </div>
     </div>
@@ -35,7 +36,7 @@
             authUser() {
                 const self = this;
                 const promise = this.$store.dispatch('authUserStore/authUser', this.form)
-                promise.then(() => {
+                promise.then((res) => {
                     if (res.ok) {
                         self.$cookies.set("keyName", this.form.email);
                         self.$router.push({ path: 'list' });
@@ -45,9 +46,9 @@
             onReset() {
                 this.form.email = '';
                 this.form.password = '';
+                this.form.confirmPassword = '';
             }
         },
-        
     }
 </script>
 

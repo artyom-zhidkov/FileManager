@@ -26,7 +26,8 @@ export default class ListPageStore {
                 .catch((err) => {
                     context.dispatch('errorMessageStore/pushMessage', {
                         header: "Server is not available",
-                        description: `${err}`
+                        description: `${err}`,
+                        variant: "danger"
                     }, {root: true});
                 });
             },
@@ -44,7 +45,8 @@ export default class ListPageStore {
                 .catch((err) => {
                     context.dispatch('errorMessageStore/pushMessage', {
                         header: "Server is not available",
-                        description: `${err}`
+                        description: `${err}`,
+                        variant: "danger"
                     }, {root: true});
                 });
 
@@ -68,7 +70,8 @@ export default class ListPageStore {
                 .catch((err) => {
                     context.dispatch('errorMessageStore/pushMessage', {
                         header: "Server is not available",
-                        description: `${err}`
+                        description: `${err}`,
+                        variant: "danger"
                     }, {root: true});
                 });
 
