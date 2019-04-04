@@ -1,9 +1,9 @@
 <template>
     <div>
-        <upload :chunkSize="102400" mode="async" 
+        <upload :chunkSize="102400"
                 :validFileType="['txt', 'jpg', 'png', 'pdf', '7z', 'mp4']" 
                 :validFileCount="3" 
-                :validFileSize="1000000000000"
+                :validFileSize="10000"
         ></upload>
 
         <table class="table table-striped table-hover">
@@ -31,7 +31,6 @@
             </tr>
             </tbody>
         </table>
-        <!-- <div class="text-uppercase text-bold">id selected: {{selected.join(", ")}}</div> -->
         <b-button variant="info" @click="download" :hidden="!selectedItem">Download</b-button>
         <b-button variant="danger" @click="deleteFile" :hidden="!selectedItem" class="float-right">Delete</b-button>
     </div>
@@ -65,17 +64,6 @@
 
             deleteFile() {
                 this.$store.dispatch('listStore/deleteFiles', this.selected.join(","))
-                .then(
-                    () => {
-                        this.$store.dispatch("listStore/getList");
-                    },
-                    () => {
-                        this.$store.dispatch('errorMessageStore/pushMessage', {
-                            header: "Server is not available",
-                            description: "Server is not available"
-                        });
-                    }
-                )
             }
         },
         computed: {
@@ -91,7 +79,7 @@
             //      this.$router.push({ path: 'home' });
             //      return;
             // }
-            this.$store.dispatch("listStore/getList");
+            this.$store.dispatch("listStore/getList")
         }
     }
 </script>

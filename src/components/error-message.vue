@@ -1,15 +1,17 @@
 <template>
-    <div class="error-wrapper" v-if="Boolean(messages.length)">
-        <div v-bind:key="message.id" v-for="message in messages">
-            <div class="error-message p-2 mb-2">
-                <div>{{message.header}}</div>
-                <p class="size-description">{{message.description}}</p>
-                <div class="text-center">
-                    <b-button size="sm" @click="buttonClose(message.id)" variant="outline-secondary">Close</b-button>
-                </div>
-            </div>
+    <div class="error-wrapper" v-if="isShow">
+        <div v-bind:key="index" v-for="(message, index) in messages">
+            <b-alert :show="isShow" variant="danger" class="pr-4 position-relative">
+                <p class="p-2 m-0">{{message.header}}</p>
+                <p class="p-2 m-0">{{message.index}}</p>
+                <p class="p-2 m-0">{{message.description}}</p>
+                <b-link @click="buttonClose(message.index)" class="position-absolute cross" >
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </b-link>
+            </b-alert>
         </div>
-        
     </div>
 </template>
 
@@ -17,8 +19,11 @@
         export default {
             name: "error-message",
             computed: {
-                messages () {
+                messages() {
                     return this.$store.state.errorMessageStore.messages
+                },
+                isShow () {
+                    return Boolean(this.$store.state.errorMessageStore.messages.length);
                 }
             },
             methods: {
@@ -31,17 +36,19 @@
 
     <style scoped lang="scss">
         .error-wrapper  {
-            width: 200px;
-            
-            .error-message {
-                color: #616161;
-                border: 1px solid rgb(221, 212, 212);
-                border-radius: 3px;
-                background: rgba(250, 93, 93, 0.25);
+            width: 250px;
 
-                .size-description {
-                    font-size: 0.8rem
-                }
+            .cross {
+                color: rgb(150, 145, 146);
+                top: 5px;
+                right: 10px;
+            }
+            .cross:hover {
+                color: rgb(95, 95, 95);
+            }
+
+            .size-description {
+                font-size: 0.8rem
             }
         }
     </style>

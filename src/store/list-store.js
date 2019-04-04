@@ -12,44 +12,67 @@ export default class ListPageStore {
         }
         this.actions = {
             getList(context) {
-                fetch(`${URL}/api/Component`, {})
-                .then(
-                    (response) => {
+                const promise =  fetch(`${URL}/api/UI/StoredFile`, {})
+
+                promise
+                .then((response) => {
                         return response.json();
-                    },
-                    (error) => {
-                        window.console.error("Rejected: " + error);
                     }
                 )
-                .then((res) => {
-                    context.commit("setFiles", res);
+                .then((response) => {
+                        context.commit("setFiles", response);
+                    }
+                )
+                .catch((err) => {
+                    context.dispatch('errorMessageStore/pushMessage', {
+                        header: "Server is not available",
+                        description: `${err}`
+                    }, {root: true});
                 });
             },
+
             download(context, idFiles) {
                 const query = `${URL}/api/FileManager/DownoaloadFile?ids=${idFiles}`
-                fetch(query)
-                .then(
-                    (response) => {
-                        return response;
+                const promise = fetch(query);
+
+                promise.then(() => {
+                        let link = document.createElement("a");
+                        link.href = query;
+                        link.click();
                     },
-                    (error) => {
-                        window.console.error("Rejected: " + error);
-                    }
                 )
-                .then(() => {
-                    let link = document.createElement("a");
-                    link.href = query;
-                    link.click();
+                .catch((err) => {
+                    context.dispatch('errorMessageStore/pushMessage', {
+                        header: "Server is not available",
+                        description: `${err}`
+                    }, {root: true});
                 });
+
+                return promise;
             },
+
              deleteFiles(context, idFiles) {
-                const query = `${URL}/api/Component/Delete?ids=${idFiles}`
-                return fetch(query, {
+                const query = `${URL}/api/Component/Delete?ids=${idFiles}`;
+
+                const promise = fetch(query, {
                     method: 'DELETE',
                     headers: [
                     ["Content-Type", "application/json"],
                     ],
                 })
+
+                promise.then(() => {
+                    context.dispatch("getList")
+                    }
+                )
+                .catch((err) => {
+                    context.dispatch('errorMessageStore/pushMessage', {
+                        header: "Server is not available",
+                        description: `${err}`
+                    }, {root: true});
+                });
+
+                return promise;
             }
         }
     }

@@ -13,14 +13,14 @@
                     <input type="file" id="fileElem" class="d-none" ref="myFiles" multiple
                            @change="handleButtonBrows">
                     <div class="d-flex justify-content-center text-left p-3">
-                        <div class="p-2 align-baseline" v-if="isShow.alertErrorFiles">
+                        <div class="p-2 align-baseline" v-if="uploadIsHaveError">
                             <span class="font-weight-bold">Error files:</span>
                             <div v-for="(fileName, key) in errorFiles" :key="key">
                                 <i class="fas fa-times text-danger"></i>
                                 <span class="pl-2">{{fileName}}</span>
                             </div>
                         </div>
-                        <div class="p-2 align-baseline" v-if="isShow.alertErrorFiles">
+                        <div class="p-2 align-baseline" v-if="uploadIsHaveError">
                             <span class="font-weight-bold">Restrictions:</span>
                             <div v-show="isShow.restrict.count">
                                 <i class="fas fa-exclamation-circle text-info"></i>
@@ -65,7 +65,6 @@
         components: {uploadItem},
         props: {
                 chunkSize: Number,
-                mode: String,
                 validFileType: Array,
                 validFileCount: Number,
                 validFileSize: Number
@@ -78,7 +77,6 @@
                 errorFiles: new Set(),
                 errorFileType: new Set(),
                 dropDestination: false,
-                pop: false,
                 isShow: {
                     restrict: {
                         count: false,
@@ -88,7 +86,6 @@
                     buttonUpload: false,
                     buttonCancel: false,
                     buttonClear: false,
-                    alertErrorFiles: false
                 },
             }
         },
@@ -98,6 +95,12 @@
             },
             validFileTypeSet() {
                 return new Set(this.validFileType)
+            },
+            uploadIsHaveError() {
+                for (let key in this.isShow.restrict) {
+                    if (this.isShow.restrict[key]) { return true; }
+                }
+                return false;
             }
         },
         methods: {
@@ -108,8 +111,9 @@
                 this.isShow.buttonUpload = false;
                 this.isShow.buttonCancel = false;
                 this.isShow.buttonClear = false;
-                this.isShow.alertErrorFiles = false;
-                for (let state in this.isShow.restrict) state = false;
+                for (let state in this.isShow.restrict) {
+                    this.isShow.restrict[state] = false;
+                }
             },
             
             handleButtonBrows() {
@@ -138,6 +142,7 @@
             createUploadWrapperFiles() {
                 this.dropDestination = false;
                 this.isShow.buttonCancel = false;
+                this.isShow.buttonClear = true;
 
                 for (let i = 0; i < this.files.length; i++) {
                     const extension = this.files[i].name.split(".").pop();
@@ -151,30 +156,18 @@
                     if (!this.validFileTypeSet.has(extension)) {
                         this.errorFileType.add(extension);
                         this.errorFiles.add(this.files[i].name);
-                        this.isShow.alertErrorFiles = true;
                         this.isShow.restrict.type = true;
-                        this.isShow.buttonClear = true;
                     }
                     if (this.files[i].size > this.validFileSize) {
                         this.errorFiles.add(this.files[i].name);
-                        this.isShow.alertErrorFiles = true;
                         this.isShow.restrict.size = true;
-                        this.isShow.buttonClear = true;
-                    }
-                    // && (this.wrapperFiles.length === this.validFileCount))
-                    if (((this.files.length + this.wrapperFiles.length) > this.validFileCount)) {
-                        this.isShow.alertErrorFiles = true;
-                        this.isShow.restrict.count = true;
-                        this.isShow.buttonClear = true;
-                        this.errorFiles.add(this.files[i].name);
                     }
                     if (!this.errorFiles.has(this.files[i].name)) {
                         if (this.wrapperFiles.length < 3) {
                             this.wrapperFiles.push(new FileWrapper(this.files[i], this.chunkSize));
                             this.isShow.buttonUpload = true;
-                            this.isShow.buttonClear = true;
                         } else {
-                            this.isShow.restrict.count = false;
+                            this.isShow.restrict.count = true;;
                             this.errorFiles.add(this.files[i].name);
                         }
                     }

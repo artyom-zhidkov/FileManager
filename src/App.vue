@@ -1,6 +1,6 @@
 <template>
-    <div class="main">
-        <div class="main d-flex align-self-stretch flex-column">
+    <div class="main_container">
+        <div class="main_container d-flex align-self-stretch flex-column">
             <div>
                 <header>
                     <nav-bar></nav-bar>
@@ -34,12 +34,12 @@ export default {
 </script>
 
 <style scope lang="scss">
-    html, body, .mainn {
+    html, body, .main_container {
         height: 100%;
     }
 
     .er-message {
-        right: 5%;
+        right: 3%;
         top: 10%;
     }
 </style>

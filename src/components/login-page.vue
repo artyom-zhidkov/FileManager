@@ -2,7 +2,6 @@
     <div>
         <h4 class="text-center pb-2">Login to FileStorage</h4>
         <div class="login-form p-2">
-            <b-alert variant="danger" v-model="dangerShow">{{dangerMessage}}</b-alert>
             <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
                 <b-form-group label="Email address:" label-for="email">
                     <b-form-input id="email" type="email" v-model="form.email" required placeholder="Enter email" />
@@ -23,47 +22,25 @@
         data() {
             return {
                 form: {
-                    email: 'Admin@ukr.net',
+                    email: '@ukr.net',
                     password: '123456',
-                },
-                dangerMessage: "No access",
-                dangerShow: false
+                }
             }
         },
         methods: {
             onSubmit() {
-                this.$store.dispatch('loginUserStore/login', this.form)
-                .then(
-                    (response) => {
-                        return response;
-                    },
-                    () => {
-                        this.$store.dispatch('errorMessageStore/pushMessage', {
-                            header: "Server is not available",
-                            description: "Server is not available"
-                        });
+                const self = this;
+                const promise = this.$store.dispatch('loginUserStore/login', self.form)
+                promise.then((res) => {
+                    if (res.ok) {
+                        self.$cookies.set("keyName", this.form.email);
+                        self.$router.push({ path: 'list' });
                     }
-                )
-                .then((res) => {
-                    if (res.status === 200) {
-                        this.$cookies.set("keyName", this.form.email);
-                        this.$store.dispatch("navbar/showIcon", true);
-                        this.$store.dispatch("navbar/setEmail", this.form.email);
-                        this.$router.push({ path: 'list' });
-                    }
-                    if (res.status === 401) {
-                        this.$store.dispatch('errorMessageStore/pushMessage', {
-                            header: "You don't have access rights",
-                            description: "You don't have access rights"
-                        });
-
-                    }
-                });
+                })
             },
             onReset() {
                 this.form.email = '';
                 this.form.password = '';
-                this.dangerShow = false;
             }
         }
     }

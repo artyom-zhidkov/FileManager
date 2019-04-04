@@ -1,6 +1,6 @@
 <template>
         <b-navbar toggleable="lg" type="dark" variant="info">
-            <b-navbar-brand @click="HomePage" href="#">FileStorage</b-navbar-brand>
+            <b-navbar-brand @click="HomePage" href="#">FileManager</b-navbar-brand>
             <b-navbar-toggle target="nav_collapse" />
             <b-collapse is-nav id="nav_collapse">
                 <!-- Right-->
@@ -29,18 +29,18 @@
         export default {
             name: "nav-bar",
             computed: {
-                isLogin() {
-                    return this.$store.state.navBarStore.isLogin
-                },
                 userEmail() {
                     return this.$store.state.navBarStore.userEmail
+                },
+                isLogin() {
+                    return Boolean(this.$store.state.navBarStore.userEmail.length)
                 },
             },
             methods: {
                 logout() {
                     if (this.$cookies.isKey("keyName")) {
                         this.$cookies.remove("keyName");
-                        this.$store.dispatch("navBarStore/showIcon", false);
+                        this.$store.dispatch("navBarStore/setEmail", "");
                         this.$router.push({ path: 'home' });
                     }
                 },
@@ -57,7 +57,6 @@
             created() {
                 if (this.$cookies.isKey("keyName")) {
                     this.$store.dispatch("navBarStore/setEmail", this.$cookies.get("keyName"));
-                    this.$store.dispatch("navBarStore/showIcon", true);
                 }
             }
         }

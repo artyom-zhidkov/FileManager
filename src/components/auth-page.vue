@@ -2,7 +2,6 @@
     <div>
         <h4 class="text-center pb-2">Create your personal account</h4>
         <div class="auth-form p-2">
-            <b-alert variant="danger" v-model="dangerShow">{{dangerMessage}}</b-alert>
             <b-form @submit.prevent="authUser" @reset.prevent="onReset">
                 <b-form-group label="Email address:" label-for="email">
                     <b-form-input id="email" type="email" v-model="form.email" required placeholder="Enter email" />
@@ -29,49 +28,23 @@
                     email: 'a@ukr.net',
                     password: '123',
                     confirmPassword: '123'
-                },
-                dangerMessage: "No access",
-                dangerShow: false
+                }
             }
         },
         methods: {
             authUser() {
                 const self = this;
-                this.$store.dispatch('authUserStore/authUser', this.form)
-                .then(
-                    () => {
+                const promise = this.$store.dispatch('authUserStore/authUser', this.form)
+                promise.then(() => {
+                    if (res.ok) {
                         self.$cookies.set("keyName", this.form.email);
-                        self.$store.dispatch("navbar/showIcon", true);
-                        self.$store.dispatch("navbar/setEmail", this.form.email);
-                        self.$router.push({ path: 'list' });
-                    },
-                    () => {
-                        self.$store.dispatch('errorMessageStore/pushMessage', {
-                            header: "Server is not available",
-                            description: "Server is not available"
-                        });
-                    }
-                )
-                .then((res) => {
-                    if (res.status === 200) {
-                        self.$cookies.set("keyName", this.form.email);
-                        self.$store.dispatch("navbar/showIcon", true);
-                        self.$store.dispatch("navbar/setEmail", this.form.email);
                         self.$router.push({ path: 'list' });
                     }
-                    if (res.status === 400) {
-                        self.$store.dispatch('errorMessageStore/pushMessage', {
-                            header: "Passwords do not match",
-                            description: "Passwords do not match"
-                        });
-
-                    }
-                });
+                })
             },
             onReset() {
                 this.form.email = '';
                 this.form.password = '';
-                this.dangerShow = false;
             }
         },
         

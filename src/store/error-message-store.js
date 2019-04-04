@@ -1,13 +1,7 @@
 export default {
     namespaced: true,
     state: {
-        messages: [
-            {
-                id: 0,
-                header: "no access",
-                description: "An internal server error is an error on the web server you’re trying to access."
-            }
-        ]
+        messages: []
     }, 
     mutations: {
         pushMessage(state, newValue) {
@@ -15,12 +9,17 @@ export default {
             state.messages.push(obj);
         },
         delleteMessage(state, id) {
-              delete state.messages.splice(id, 1);
+            delete state.messages.splice(id, 1);
         }
     },
     actions: {
         pushMessage(context, newValue) {
             context.commit('pushMessage', newValue);
+            var self = context;
+            setTimeout(function(){
+                self.commit('delleteMessage', self.state.messages.length - 1)
+            }, 6000);
+
         },
         delleteMessage(context, id) {
             context.commit('delleteMessage', id);

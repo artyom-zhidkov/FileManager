@@ -5,13 +5,26 @@ export default class FileDetailsStore {
             file: null
         }
         this.mutations = {
-            setFiles(state, value) {
+            setFile(state, value) {
                 state.file = value;
             }
         }
         this.actions = {
             getFile(context, id) {
-                return fetch(`${URL}/api/Component/${id}`);
+                const promise = fetch(`${URL}/api/UI/${id}`)
+                
+                promise.then((response) => {
+                        context.commit("setFile", response.json());
+                    }
+                )
+                .catch((err) => {
+                    context.dispatch('errorMessageStore/pushMessage', {
+                        header: "Server is not available",
+                        description: `${err}`
+                    }, {root: true});
+                });
+
+                return promise;
             }
         }
     }
