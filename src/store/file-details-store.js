@@ -1,8 +1,9 @@
+import httpClient from '../utils/httpClient';
 export default class FileDetailsStore {
     constructor(URL) {
         this.namespaced = true;
         this.state = {
-            file: null
+            file: {}
         }
         this.mutations = {
             setFile(state, value) {
@@ -11,12 +12,10 @@ export default class FileDetailsStore {
         }
         this.actions = {
             getFile(context, id) {
-                const promise = fetch(`${URL}/api/UI/${id}`)
-                
-                promise
+                httpClient.GET(`${URL}/api/UI/${id}`)
                 .then((response) => {
-                    return response.json();
-                }
+                        return response.json();
+                    }
                 )
                 .then((response) => {
                         context.commit("setFile", response);
@@ -26,11 +25,10 @@ export default class FileDetailsStore {
                     context.dispatch('errorMessageStore/pushMessage', {
                         header: "Server is not available",
                         description: `${err}`,
-                        variant: "danger"
+                        variant: "danger",
+                        timeShown: 8000
                     }, {root: true});
                 });
-
-                // return promise;
             }
         }
     }

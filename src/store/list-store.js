@@ -1,6 +1,6 @@
+import httpClient from '../utils/httpClient';
 export default class ListPageStore {
     constructor(URL) {
-
         this.namespaced = true;
         this.state = {
             files: []
@@ -12,8 +12,7 @@ export default class ListPageStore {
         }
         this.actions = {
             getList(context) {
-                const promise =  fetch(`${URL}/api/UI/StoredFile`, {})
-
+                const promise = httpClient.GET(`${URL}/api/UI/StoredFile`)
                 promise
                 .then((response) => {
                         return response.json();
@@ -27,17 +26,18 @@ export default class ListPageStore {
                     context.dispatch('errorMessageStore/pushMessage', {
                         header: "Server is not available",
                         description: `${err}`,
-                        variant: "danger"
+                        variant: "danger",
+                        timeShown: 8000
                     }, {root: true});
                 });
             },
 
             download(context, idFiles) {
-                const query = `${URL}/api/FileManager/DownoaloadFile?ids=${idFiles}`
-                const promise = fetch(query);
+                const query = `${URL}/api/FileManager/DownoaloadFile?ids=${idFiles}`;
+                const promise = httpClient.GET(`${URL}/api/FileManager/DownoaloadFile?ids=${idFiles}`);
 
                 promise.then(() => {
-                        let link = document.createElement("a");
+                        const link = document.createElement("a");
                         link.href = query;
                         link.click();
                     },
@@ -49,22 +49,15 @@ export default class ListPageStore {
                         variant: "danger"
                     }, {root: true});
                 });
-
-                return promise;
             },
 
              deleteFiles(context, idFiles) {
                 const query = `${URL}/api/Component/Delete?ids=${idFiles}`;
 
-                const promise = fetch(query, {
-                    method: 'DELETE',
-                    headers: [
-                    ["Content-Type", "application/json"],
-                    ],
-                })
+                const promise = httpClient.DELETE(query)
 
                 promise.then(() => {
-                    context.dispatch("getList")
+                    context.dispatch("getList");
                     }
                 )
                 .catch((err) => {
@@ -74,8 +67,6 @@ export default class ListPageStore {
                         variant: "danger"
                     }, {root: true});
                 });
-
-                return promise;
             }
         }
     }

@@ -4,20 +4,20 @@ export default {
         messages: []
     }, 
     mutations: {
-        pushMessage(state, newValue) {
-            state.messages.push(newValue);
+        pushMessage(state, message) {
+            state.messages.push(message);
         },
         delleteMessage(state, id) {
             delete state.messages.splice(id, 1);
         }
     },
     actions: {
-        pushMessage(context, newValue) {
-            context.commit('pushMessage', newValue);
+        pushMessage(context, message) {
+            context.commit('pushMessage', message);
             var self = context;
             setTimeout(function(){
                 self.commit('delleteMessage', self.state.messages.length - 1)
-            }, 8000);
+            }, message.timeShown);
 
         },
         delleteMessage(context, id) {

@@ -1,4 +1,3 @@
-
 import Vuex from 'vuex'
 
 import AuthUserStore from "./auth-store";
@@ -9,8 +8,7 @@ import FileDetailsStore from './file-details-store';
 import navBarStore from './navBar-store';
 import errorMessageStore from './error-message-store';
 
-const URL = "http://172.22.61.76:8080";
-
+const URL = "http://172.22.61.41:9999";
 
 const loginUserStore = new LoginUserStore(URL);
 const authUserStore = new AuthUserStore(URL);
@@ -27,7 +25,7 @@ export default () => {
         listStore,
         fileDetailsStore,
         navBarStore,
-        errorMessageStore
+        errorMessageStore,
     };
 
     return new Vuex.Store({

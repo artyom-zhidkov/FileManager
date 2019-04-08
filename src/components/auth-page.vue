@@ -26,21 +26,37 @@
         data() {
             return {
                 form: {
-                    email: 'a@ukr.net',
-                    password: '123',
-                    confirmPassword: '123'
+                    email: 'aaa@ukr.net',
+                    password: '1234',
+                    confirmPassword: '1234'
                 }
             }
         },
         methods: {
             authUser() {
+                if (this.form.password != this.form.confirmPassword) {
+                    this.$store.dispatch('errorMessageStore/pushMessage', {
+                            header: `The Confirm Password confirmation does not match`,
+                            description: `Please, Enter correct value `,
+                            variant: "warning",
+                            timeShown: 5000
+                        }, {root: true});
+                        return;
+                }
+                if (this.form.password.length < 5) {
+                    this.$store.dispatch('errorMessageStore/pushMessage', {
+                            header: `The Password field must be at least 5 characters`,
+                            description: `Please, Enter correct value `,
+                            variant: "warning",
+                            timeShown: 5000
+                        }, {root: true});
+                        return;
+                }
                 const self = this;
                 const promise = this.$store.dispatch('authUserStore/authUser', this.form)
-                promise.then((res) => {
-                    if (res.ok) {
-                        self.$cookies.set("keyName", this.form.email);
-                        self.$router.push({ path: 'list' });
-                    }
+                promise.then(() => {
+                    self.$cookies.set("keyName", this.form.email);
+                    self.$router.push({ path: 'list' });
                 })
             },
             onReset() {

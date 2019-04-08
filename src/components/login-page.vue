@@ -32,10 +32,8 @@
                 const self = this;
                 const promise = this.$store.dispatch('loginUserStore/login', self.form)
                 promise.then((res) => {
-                    if (res.ok) {
                         self.$cookies.set("keyName", this.form.email);
                         self.$router.push({ path: 'list' });
-                    }
                 })
             },
             onReset() {

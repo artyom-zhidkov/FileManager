@@ -1,21 +1,21 @@
-
+import httpClient from '../utils/httpClient';
 export default class UploadStore {
     constructor(URL) {
         this.namespaced = true;
         this.actions = {
             uploadChunks(context, body) {
-                return fetch(`${URL}/api/FileManager/InputChunksNew`, {
-                    method: 'POST',
-                    headers: [
-                    ["Content-Type", "application/json"],
-                    ],
-                    body: JSON.stringify(body)
-                })
-                // return new Promise((resolve) => {
-                //     setTimeout(()=>{
-                //         resolve();
-                //     },1000)
-                // })
+                const promise = httpClient.POST(`${URL}/api/FileManager/InputChunksNew`, body);
+
+                promise.catch((err) => {
+                    context.dispatch('errorMessageStore/pushMessage', {
+                        header: "Server is not available",
+                        description: `${err}`,
+                        variant: "danger",
+                        timeShown: 8000
+                    }, {root: true});
+                });
+
+                return promise
             }
         }
     }

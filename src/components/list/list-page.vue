@@ -75,10 +75,10 @@
             }
         },
         created() {
-            // if (!this.$cookies.isKey("keyName")) {
-            //      this.$router.push({ path: 'home' });
-            //      return;
-            // }
+            if (!this.$cookies.isKey("keyName")) {
+                 this.$router.push({ path: 'home' });
+                 return;
+            }
             this.$store.dispatch("listStore/getList")
         }
     }
