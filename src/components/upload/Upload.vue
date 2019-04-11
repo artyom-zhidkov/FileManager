@@ -239,7 +239,7 @@
 
     $background-color: #f1f3f4;
     $border-color: rgb(236, 236, 236);
-    $main-color: #db4019;  //#17a2b8;
+    $main-color: #17a2b8;
 
     .drop-area {
         background-color: $background-color;
