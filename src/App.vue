@@ -34,6 +34,7 @@ export default {
 </script>
 
 <style scope lang="scss">
+    
     html, body, .main_container {
         height: 100%;
     }

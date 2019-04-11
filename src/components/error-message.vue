@@ -1,6 +1,6 @@
 <template>
     <div class="error-wrapper" v-if="isShow">
-        <div v-bind:key="index" v-for="(message, index) in messages">
+        <div :key="index" v-for="(message, index) in messages">
             <b-alert :show="isShow" :variant="message.variant" class="pr-4 position-relative">
                 <p class="p-2 m-0">{{message.header}}</p>
                 <p class="p-2 m-0">{{message.description}}</p>
@@ -19,7 +19,7 @@
             name: "error-message",
             computed: {
                 messages() {
-                    return this.$store.state.errorMessageStore.messages
+                    return this.$store.state.errorMessageStore.messages;
                 },
                 isShow () {
                     return Boolean(this.$store.state.errorMessageStore.messages.length);

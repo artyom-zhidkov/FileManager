@@ -8,7 +8,7 @@ import FileDetailsStore from './file-details-store';
 import navBarStore from './navBar-store';
 import errorMessageStore from './error-message-store';
 
-const URL = "http://172.22.61.41:9999";
+const URL = "http://172.31.82.145:1111";
 
 const loginUserStore = new LoginUserStore(URL);
 const authUserStore = new AuthUserStore(URL);

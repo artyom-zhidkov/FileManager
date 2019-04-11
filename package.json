@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "pack": "node_modules/.bin/webpack --config webpack.config.js",
+    "serve": "node_modules/.bin/webpack --config webpack.config.js & vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -30,7 +31,8 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.7"
+    "vue-template-compiler": "^2.6.7",
+    "webpack-cli": "^3.3.0"
   },
   "eslintConfig": {
     "root": true,

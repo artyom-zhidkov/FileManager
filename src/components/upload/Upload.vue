@@ -168,7 +168,7 @@
                             this.wrapperFiles.push(new FileWrapper(this.files[i], this.chunkSize));
                             this.isShow.buttonUpload = true;
                         } else {
-                            this.isShow.restrict.count = true;;
+                            this.isShow.restrict.count = true;
                             this.errorFiles.add(this.files[i].name);
                         }
                     } else {
@@ -233,11 +233,13 @@
 
 
 
-<style lang="scss" scoped>
+<style lang="scss">
+
+    // @import "../../sass/main";
 
     $background-color: #f1f3f4;
     $border-color: rgb(236, 236, 236);
-    $main-color: #17a2b8;
+    $main-color: #db4019;  //#17a2b8;
 
     .drop-area {
         background-color: $background-color;

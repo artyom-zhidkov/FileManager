@@ -1,18 +1,14 @@
 <template>
         <b-navbar toggleable="lg" type="dark" variant="info">
-            <b-navbar-brand @click="HomePage" href="#">FileManager</b-navbar-brand>
+            <router-link class="logo" to="home">FileManager</router-link>
             <b-navbar-toggle target="nav_collapse" />
             <b-collapse is-nav id="nav_collapse">
                 <!-- Right-->
-                <b-navbar-nav class="ml-auto">
-                    <b-navbar-nav>
-                        <b-nav-item v-show="!isLogin"
-                                    @click="loginPage" href="#">Log in</b-nav-item>
-                    </b-navbar-nav>
-                    <b-button v-show="!isLogin" size="sm"
-                              variant="outline-light" type="submit" @click="AuthPage">Sign up</b-button>
+                <b-navbar-nav class="ml-auto d-flex align-items-end">
+                    <router-link class="button m-1" :show="!isLogin" to="login">Log in</router-link> 
+                    <router-link class="button button-sign-up m-1" :show="!isLogin" to="auth">Sign up</router-link> 
                     <b-navbar-brand href="#">
-                        <i v-show="isLogin" class="fas fa-user-check"></i>
+                        <i v-show="isLogin" class="fas fa-user-check ml-2"></i>
                     </b-navbar-brand>
                     <b-nav-item-dropdown v-show="isLogin" right>
                             <template slot="button-content">
@@ -43,15 +39,6 @@
                         this.$store.dispatch("navBarStore/setEmail", "");
                         this.$router.push({ path: 'home' });
                     }
-                },
-                loginPage() {
-                    this.$router.push({ path: 'login' });
-                },
-                AuthPage() {
-                    this.$router.push({ path: 'auth' });
-                },
-                HomePage() {
-                    this.$router.push({ path: 'home' });
                 }
             },
             created() {
@@ -63,4 +50,35 @@
     </script>
 
     <style scoped lang="scss">
+        .button {
+            padding: 5px 10px;
+            color: white;
+            text-decoration-line: none;
+            width: 80px;
+            text-align: center;
+            border: solid 1px #17a2b8;
+
+            &.button:hover {
+                border: solid 1px white;
+                border-radius: 3px;
+            }
+
+            &.button-sign-up {
+                border: solid 1px white;
+                border-radius: 3px;
+            }
+            
+            &.button-sign-up:hover {
+                color: grey;
+                background: white;
+            }
+
+        }
+
+        .logo {
+            color: white;
+            font-size: large;
+            font-weight: 600;
+            text-decoration-line: none;
+        }
     </style>

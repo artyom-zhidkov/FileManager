@@ -5,6 +5,7 @@ import VueCookies from 'vue-cookies';
 import router from './router';
 import createStores from './store';
 import BootstrapVue from 'bootstrap-vue';
+import './sass/main.scss';
 
 Vue.use(Vuex);
 Vue.use(BootstrapVue);
