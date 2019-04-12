@@ -10,12 +10,12 @@
                 </main>
             </div>
             <div class="mt-auto">
-                <footer class="bg-info text-white">
+                <footer class="text-white primary-background-color">
                     <div class="footer-copyright text-center py-3">© 2019 Copyright</div>
                 </footer>
             </div>
         </div>
-        <error-message class="er-message position-absolute"></error-message>
+        <error-message class="errore-message position-absolute"></error-message>
     </div>
 </template>
 

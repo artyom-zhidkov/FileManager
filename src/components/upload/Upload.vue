@@ -9,32 +9,32 @@
                 <form class="my-form mb-0">
                     <i class="fas fa-cloud-upload-alt fa-3x"></i>
                     <p class="font-weight-bold pt-2">Drag&Drop files here or</p>
-                    <label class="button-browse-files" for="fileElem">Browse files</label>
+                    <label class="button-browse-files button-outline-primary-color" for="fileElem">Browse files</label>
                     <input type="file" id="fileElem" class="d-none" ref="myFiles" multiple
                            @change="handleButtonBrows">
                     <div class="d-flex justify-content-center text-left p-3">
                         <div class="p-2 align-baseline" v-if="uploadIsHaveError">
                             <span class="font-weight-bold">Error files:</span>
                             <div v-for="(fileName, key) in errorFiles" :key="key">
-                                <i class="fas fa-times text-danger"></i>
+                                <i class="fas fa-times danger-color"></i>
                                 <span class="pl-2">{{fileName}}</span>
                             </div>
                         </div>
                         <div class="p-2 align-baseline" v-if="uploadIsHaveError">
                             <span class="font-weight-bold">Restrictions:</span>
                             <div v-show="isShow.restrict.count">
-                                <i class="fas fa-exclamation-circle text-info"></i>
+                                <i class="fas fa-exclamation-circle primary-color"></i>
                                 <span class="pl-2">count files limit: {{validFileCount}}</span>
                             </div>
                             <div v-show="isShow.restrict.type">
-                                <i class="fas fa-exclamation-circle text-info"></i>
+                                <i class="fas fa-exclamation-circle primary-color"></i>
                                 <span class="pl-2">forbidden file types:</span>
                                 <span v-for="(type, key) in errorFileType" :key="key">
                                     <span class="pl-2">{{type}}</span>
                                 </span>
                             </div>
                             <div v-show="isShow.restrict.size">
-                                <i class="fas fa-exclamation-circle text-info"></i>
+                                <i class="fas fa-exclamation-circle primary-color"></i>
                                 <span class="pl-2">size files limit: {{validFileSize}}</span>
                             </div>
                         </div>
@@ -46,9 +46,9 @@
             <upload-item @deleteFile="deleteFile" :fileWrapper="fileWrapper"></upload-item>
         </div>
         <div class="d-flex justify-content-center">
-            <b-button class="ml-2" @click="handleUpload" :hidden="!isShow.buttonUpload" variant="info">Upload</b-button>
-            <b-button class="ml-2" @click="handleCancel" :hidden="!isShow.buttonCancel" variant="info">Cancel</b-button>
-            <b-button class="ml-2" @click="reset" :hidden="!isShow.buttonClear" variant="outline-danger">Clear Uploaded</b-button>
+            <b-button class="ml-2 button-primary-color" @click="handleUpload" :hidden="!isShow.buttonUpload">Upload</b-button>
+            <b-button class="ml-2 button-primary-color" @click="handleCancel" :hidden="!isShow.buttonCancel" variant="info">Cancel</b-button>
+            <b-button class="ml-2 button-outline-danger-color" @click="reset" :hidden="!isShow.buttonClear">Clear Uploaded</b-button>
         </div>            
     </div>
     
@@ -231,25 +231,17 @@
     }
  </script>
 
-
-
 <style lang="scss">
 
-    // @import "../../sass/main";
-
-    $background-color: #f1f3f4;
-    $border-color: rgb(236, 236, 236);
-    $main-color: #17a2b8;
-
     .drop-area {
-        background-color: $background-color;
+        background-color: $uploadBackgroundColor;
         margin-bottom: 20px;
         border-radius: 3px;
         padding: 10px;
-        color: grey;
+        color: $uploadIconColor;
 
         .dashed {
-            border: 2px dashed #ccc;
+            border: 2px dashed $uploadDashedLineColor;
             border-radius: 3px;
             padding: 20px;
             pointer-events: none;
@@ -260,22 +252,21 @@
             padding: 10px;
             cursor: pointer;
             border-radius: 5px;
-            border: 1px solid $main-color;
-            color: $main-color;
+            border: 1px solid $primaryColor;
             margin-bottom: 0;
             pointer-events: auto;
         }
 
         .button-browse-files:hover {
-            background: #17a2b8;
-            color: white;
+            background: $primaryColor;
+            color: $uploadBackgroundColor;
         }
     }
 
     .activ {
         .dashed {
-            border: 2px dashed #6d8ccc;
-            background-color: #aee6f4;
+            border: 2px dashed $uploadActiveBorderColor;
+            background-color: $uploadActiveBackgroundColor;
         }
     }
 </style>        

@@ -15,7 +15,8 @@
             </div>
         </div>
         <div class="progress-bar">
-            <b-progress height="10px" :value="fileWrapper.status.progress" variant="info" :animated="!fileWrapper.status.finished" class="mt-2 b-progress" /><p></p>
+            <b-progress height="10px" :value="fileWrapper.status.progress" variant="warning" 
+                        :animated="!fileWrapper.status.finished" class="mt-2 mb-2 b-progress" />
         </div>
     </div>
 </template>
@@ -58,17 +59,13 @@
 
 <style lang="scss" scoped>
 
-    $background-color: #f1f3f4;
-    $border-color: rgb(236, 236, 236);
-    $icon-color: #17a2b8;
-
     .component-upload-item{
         padding: 3px 10px 0;
         margin-bottom: 10px;
-        background: $background-color;
+        background: $uploadItemBackground;
         text-align: left;
         font-weight: 200;
-        border: solid 1px $border-color;
+        border: solid 1px $uploadItemBorderColor;
         border-radius: 2px;
 
         .flex_space-between {
@@ -76,16 +73,16 @@
             justify-content: space-between;
 
             .icon-color {
-                color: $icon-color;
+                color: $uploadItemIconColor;
             }
 
             .icon-color_grey {
-                color: #ccc;
+                color: $uploadItemCrossColor;
             }
 
             .hover:hover {
                 cursor: pointer;
-                color: $icon-color;
+                color: $uploadItemIconActiveColor;
             }
         }
 
@@ -93,12 +90,11 @@
             background: inherit;
 
             .b-progress {
-                background: white;
-                border: solid 1px $border-color;
+                background: $primaryBackgroundColor;
+                border: solid 1px $uploadItemBorderColor;
 
                 p {
                     margin-bottom: 0;
-
                 }
             }
         }

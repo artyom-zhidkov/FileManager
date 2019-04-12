@@ -72,6 +72,6 @@
     .auth-form {
         max-width: 400px;
         margin: auto;
-        border: 1px solid #f1f3f4;
+        border: 1px solid $sekondBackgroundColor;
     }
 </style>

@@ -1,0 +1,11 @@
+.button-primary-color {
+    @include btnColor($buttonPrimaryColor);
+}
+
+.button-outline-primary-color {
+    @include btnInverseColor($buttonPrimaryColor);
+}
+
+.button-outline-danger-color {
+    @include btnInverseColor($dangerColor);
+}

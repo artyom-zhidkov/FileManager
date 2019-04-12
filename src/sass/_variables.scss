@@ -1,10 +1,25 @@
-    $fmUploadItemBackgroundColor: #f1f3f4;
-    $fmUploadeItemBorderColor: rgb(236, 236, 236);
-    // $primary: #17a2b8;
-    $main-color: #17a2b8;
+    $primaryColor: #a07174;
+    $dangerColor: #c2371e;
+    $primaryBackgroundColor: white;
+    $sekondBackgroundColor: #f1f3f4;
 
-    body {
-        
-        background-color: bisque
-    }
+    //button
+    $buttonPrimaryColor: $primaryColor;
     
+    // navbar
+    $navBarLogoFontWeight: 600;
+    
+    //upload
+    $uploadBackgroundColor: $sekondBackgroundColor;
+    $uploadDashedLineColor: #ccc;
+    $uploadIconColor: grey;
+    $uploadActiveBorderColor: #7ab1ca;
+    $uploadActiveBackgroundColor: #aee4f4;
+
+    //upload-item
+    $uploadItemIconColor: $primaryColor;
+    $uploadItemCrossColor: #ccc;
+    $uploadItemBackground: $sekondBackgroundColor;
+
+    $uploadItemIconActiveColor: $primaryColor;
+    $uploadItemBorderColor: rgb(236, 236, 236);

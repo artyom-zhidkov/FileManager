@@ -1,5 +1,5 @@
 <template>
-        <b-navbar toggleable="lg" type="dark" variant="info">
+        <b-navbar toggleable="lg" type="dark" class="primary-background-color">
             <router-link class="logo" to="home">FileManager</router-link>
             <b-navbar-toggle target="nav_collapse" />
             <b-collapse is-nav id="nav_collapse">
@@ -52,33 +52,32 @@
     <style scoped lang="scss">
         .button {
             padding: 5px 10px;
-            color: white;
+            color: $primaryBackgroundColor;
             text-decoration-line: none;
             width: 80px;
             text-align: center;
-            border: solid 1px #17a2b8;
+            border: solid 1px $primaryColor;
 
             &.button:hover {
-                border: solid 1px white;
+                border: solid 1px $primaryBackgroundColor;
                 border-radius: 3px;
             }
 
             &.button-sign-up {
-                border: solid 1px white;
+                border: solid 1px $primaryBackgroundColor;
                 border-radius: 3px;
             }
             
             &.button-sign-up:hover {
-                color: grey;
-                background: white;
+                color: $primaryColor;
+                background: $primaryBackgroundColor;
             }
-
         }
 
         .logo {
-            color: white;
+            color: $primaryBackgroundColor;
             font-size: large;
-            font-weight: 600;
+            font-weight: $navBarLogoFontWeight;
             text-decoration-line: none;
         }
     </style>
